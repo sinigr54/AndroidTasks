@@ -19,7 +19,7 @@ model {
         ldLibs.addAll(['android', 'log'])
         cppFlags.add("-std=c++1y")
         platformVersion = 21
-        stl = "gnustl_static"
+        stl = "gnustl_shared"
 
         cppFlags.add('-I' + file("src/main/jni/tasksLib"))
     }
