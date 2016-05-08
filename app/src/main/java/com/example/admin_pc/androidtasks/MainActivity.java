@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
 	TasksManager tasksManager;
 
+	String taskDirectory = "/fileDir";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
 		tasksManager = TasksManager.getTaskManager();
 		tasksManager.setWorkDirectory(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
-				getAbsolutePath() + "/fileDir");
+				getAbsolutePath() + taskDirectory);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
