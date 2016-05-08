@@ -4,17 +4,35 @@
 
 using std::string;
 
-TasksLoader loader;
+/*
+ * Объект, осуществляющий работу с каталогом заданий
+ * и их динамическую загрузку из библиотек
+ */
+static TasksLoader loader;
 
 extern "C" {
 
-// Возвращает имена всех файлов из рабочей папки
+/*
+ * Устанавливает рабочий каталог, гду будут храниться все тесты
+ */
+JNIEXPORT void JNICALL
+Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_setLoaderWorkDirectory(JNIEnv *env,
+                                                                                  jobject instance,
+                                                                                  jstring directory_) {
+	string directory = env->GetStringUTFChars(directory_, 0);
+	loader.setTasksDirectory(directory);
+}
+
+/*
+ * Возвращает список всех доступных заданий
+ */
 JNIEXPORT jobjectArray JNICALL
-Java_com_example_admin_1pc_androidtasks_MainActivity_getAllTaskNames(JNIEnv *env, jobject instance) {
+Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_allTaskFromNative(JNIEnv *env,
+                                                                             jobject instance) {
 	jobjectArray result;
 
 	auto names = loader.getAllExistsTasks();
-	result = (jobjectArray) env->NewObjectArray(names.size(), env->FindClass("java/lang/String"),
+	result = (jobjectArray) env->NewObjectArray((jsize) names.size(), env->FindClass("java/lang/String"),
 	                                            env->NewStringUTF(""));
 	for (int i = 0; i < names.size(); ++i) {
 		env->SetObjectArrayElement(result, i, env->NewStringUTF(names[i].c_str()));
@@ -23,18 +41,7 @@ Java_com_example_admin_1pc_androidtasks_MainActivity_getAllTaskNames(JNIEnv *env
 	return result;
 }
 
-JNIEXPORT jstring JNICALL
-Java_com_example_admin_1pc_androidtasks_MainActivity_getTaskName(JNIEnv *env, jobject instance,
-                                                                 jobject manager) {
-	/*auto assetManager = AAssetManager_fromJava(env, manager);
-	TasksLoader loader(assetManager);
-
-	string textFile;
-	textFile = loader.readFile("file1.txt");
-
-	return env->NewStringUTF(textFile.c_str());*/
-}
-
+// Тест работы NDK
 JNIEXPORT jstring JNICALL
 Java_com_example_admin_1pc_androidtasks_MainActivity_helloFromLibrary(JNIEnv *env, jobject instance,
                                                                       jstring tasksPath_) {

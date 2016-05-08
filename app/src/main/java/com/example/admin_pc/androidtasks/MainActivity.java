@@ -1,6 +1,5 @@
 package com.example.admin_pc.androidtasks;
 
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -12,15 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import com.example.admin_pc.androidtasks.Tasks.TasksManager;
 
 public class MainActivity extends AppCompatActivity {
 
 	static {
 		System.loadLibrary("tasks");
 	}
+
+	TasksManager tasksManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +28,9 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		String path = "";
-		FileOutputStream outputStream;
-		FileInputStream inputStream;
-		if (Environment.isExternalStorageEmulated()) {
-			File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "fileDir");
-			dir.mkdirs();
-
-			File file = new File(dir, "file.txt");
-		}
+		tasksManager = TasksManager.getTaskManager();
+		tasksManager.setWorkDirectory(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
+				getAbsolutePath() + "/fileDir");
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
@@ -73,24 +66,19 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	// Тест работы
 	public void clickButton(View view) {
 		TextView textView = (TextView) findViewById(R.id.text_view);
 		if (textView != null) {
-			helloFromLibrary(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
-					getAbsolutePath());
-
 			StringBuilder builder = new StringBuilder();
-			for (String name : getAllTaskNames()) {
-				builder.append(name).append(System.lineSeparator());
+			for (String task : tasksManager.allTasks()) {
+				builder.append(task).append(System.lineSeparator());
 			}
 
-			textView.setText(builder.toString());
+			String result = builder.toString();
+			textView.setText(result.substring(0, result.length() - 1));
 		}
 	}
 
 	public native String helloFromLibrary(String tasksPath);
-
-	public native String getTaskName(AssetManager manager);
-
-	public native String[] getAllTaskNames();
 }
