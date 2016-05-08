@@ -8,10 +8,6 @@
 #include <dirent.h>
 #include <android/log.h>
 
-TasksLoader::TasksLoader() : workDirectory("") {
-
-}
-
 TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDirectory) {
 
 }

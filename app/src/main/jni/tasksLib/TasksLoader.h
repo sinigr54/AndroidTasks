@@ -22,9 +22,7 @@ class TasksLoader {
 public:
 	const string &getWorkDirectory() const;
 
-	TasksLoader();
-
-	TasksLoader(const string &tasksDirectory);
+	TasksLoader(const string &tasksDirectory = "");
 
 	void setTasksDirectory(const string &directoryName);
 
