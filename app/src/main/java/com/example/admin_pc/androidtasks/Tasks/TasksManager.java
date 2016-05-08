@@ -5,5 +5,20 @@ public class TasksManager {
 		System.loadLibrary("tasks");
 	}
 
+	/*
+		Directory for all task libraries
+	*/
+	private String workDirectory;
 
+	public TasksManager(String workDirectory) {
+		this.workDirectory = workDirectory;
+	}
+
+	public String getWorkDirectory() {
+		return workDirectory;
+	}
+
+	public void setWorkDirectory(String workDirectory) {
+		this.workDirectory = workDirectory;
+	}
 }
