@@ -5,12 +5,10 @@
 #ifndef ANDROIDTASKS_TASKSLOADER_H
 #define ANDROIDTASKS_TASKSLOADER_H
 
-#include <android/asset_manager_jni.h>
-#include <android/asset_manager.h>
-
 #include <memory>
 #include <string>
 #include <vector>
+#include <dlfcn.h>
 
 using std::shared_ptr;
 using std::string;

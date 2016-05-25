@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
 	TasksManager tasksManager;
 
-	String taskDirectory = "/fileDir";
+	private static final String taskDirectory = "/fileDir";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,14 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		final String fullTasksDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
+				getAbsolutePath() + taskDirectory;
+
 		tasksManager = TasksManager.getTaskManager();
-		tasksManager.setWorkDirectory(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
-				getAbsolutePath() + taskDirectory);
+		tasksManager.setWorkDirectory(fullTasksDirectory);
+
+		TextView textView = (TextView) findViewById(R.id.text_view);
+		textView.setText(fullTasksDirectory);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
