@@ -28,7 +28,7 @@ public:
 
 	vector<string> getAllExistsTasks();
 
-	TaskConstructor loadTaskFromLibrary(const string &taskName) const;
+	TaskConstructor loadTaskFromLibrary(const string &taskType, int taskNumber) const;
 };
 
 

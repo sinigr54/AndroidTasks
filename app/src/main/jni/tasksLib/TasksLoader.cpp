@@ -8,6 +8,7 @@
 #include <dirent.h>
 #include <android/log.h>
 #include <dlfcn.h>
+#include <sstream>
 
 TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDirectory) {
 
@@ -58,11 +59,21 @@ const string &TasksLoader::getWorkDirectory() const {
 	return workDirectory;
 }
 
-TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskName) const {
+TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
 	TaskConstructor constructor;
 
-	string taskFile = workDirectory + taskName + ".so";
+	std::stringstream stream;
+	stream << taskNumber;
+
+	string taskFile = workDirectory + taskType + ".so";
 	void* handle = dlopen(taskFile.c_str(), RTLD_LAZY);
 
+	void (*loadTask)(TaskConstructor &c);
+	loadTask = (void (*)(TaskConstructor &)) dlsym(handle, stream.str().c_str());
 
+	loadTask(constructor);
+
+	dlclose(handle);
+
+	return constructor;
 }
