@@ -64,12 +64,13 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 
 	std::stringstream stream;
 	stream << taskNumber;
+	string functionName("task");
 
 	string taskFile = workDirectory + taskType + ".so";
 	void* handle = dlopen(taskFile.c_str(), RTLD_LAZY);
 
 	void (*loadTask)(TaskConstructor &c);
-	loadTask = (void (*)(TaskConstructor &)) dlsym(handle, stream.str().c_str());
+	loadTask = (void (*)(TaskConstructor &)) dlsym(handle, (functionName + stream.str()).c_str());
 
 	loadTask(constructor);
 
