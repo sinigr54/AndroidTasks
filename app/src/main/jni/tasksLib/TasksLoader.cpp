@@ -7,12 +7,13 @@
 #include <iostream>
 #include <dirent.h>
 #include <android/log.h>
+#include <dlfcn.h>
 
 TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDirectory) {
 
 }
 
-string TasksLoader::readFile(const string &fileName) {
+string TasksLoader::readTextFile(const string &fileName) {
 	string textFromFile = "";
 	std::fstream file(workDirectory + "/" + fileName);
 
@@ -55,4 +56,13 @@ void TasksLoader::setTasksDirectory(const string &directoryName) {
 
 const string &TasksLoader::getWorkDirectory() const {
 	return workDirectory;
+}
+
+TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskName) const {
+	TaskConstructor constructor;
+
+	string taskFile = workDirectory + taskName + ".so";
+	void* handle = dlopen(taskFile.c_str(), RTLD_LAZY);
+
+
 }

@@ -19,6 +19,11 @@ public class TasksManager {
 		return manager;
 	}
 
+	public static TasksManager getTaskManager(String workDirectory) {
+		manager.setWorkDirectory(workDirectory);
+		return  manager;
+	}
+
 	/*
 		Directory for all task libraries
 	*/

@@ -16,7 +16,7 @@ model {
 
     android.ndk {
         moduleName = "tasks"
-        ldLibs.addAll(['android', 'log'])
+        ldLibs.addAll(['android', 'log', 'dl'])
         cppFlags.add("-std=c++1y")
         platformVersion = 21
         stl = "gnustl_shared"

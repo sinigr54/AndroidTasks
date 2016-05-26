@@ -33,11 +33,7 @@ public class MainActivity extends AppCompatActivity {
 		final String fullTasksDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).
 				getAbsolutePath() + taskDirectory;
 
-		tasksManager = TasksManager.getTaskManager();
-		tasksManager.setWorkDirectory(fullTasksDirectory);
-
-		TextView textView = (TextView) findViewById(R.id.text_view);
-		textView.setText(fullTasksDirectory);
+		tasksManager = TasksManager.getTaskManager(fullTasksDirectory);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {

@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <dlfcn.h>
+#include "TaskConstructor.h"
 
 using std::shared_ptr;
 using std::string;
@@ -24,9 +24,11 @@ public:
 
 	void setTasksDirectory(const string &directoryName);
 
-	string readFile(const string &fileName);
+	string readTextFile(const string &fileName);
 
 	vector<string> getAllExistsTasks();
+
+	TaskConstructor loadTaskFromLibrary(const string &taskName) const;
 };
 
 

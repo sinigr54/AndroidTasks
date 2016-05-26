@@ -4,6 +4,38 @@
 
 #include "TaskConstructor.h"
 
-string TaskConstructor::hello() {
-	return "Hello, World!";
+TaskConstructor::TaskConstructor(): taskText("") {
+
+}
+
+void TaskConstructor::weight() {
+
+}
+
+string TaskConstructor::getTaskText() {
+	return taskText;
+}
+
+void TaskConstructor::textTest(const string &text) {
+	taskText += text + "\n";
+}
+
+void TaskConstructor::beginTest(const string &text) {
+	taskText += text + "\n";
+}
+
+void TaskConstructor::endTest() {
+
+}
+
+void TaskConstructor::countVariantsAndType(int count, char typeAnswer) {
+
+}
+
+void TaskConstructor::variant(int trueAnswer, const string &answer, const string &cmt, const string &numpic) {
+
+}
+
+void TaskConstructor::addOldTask() {
+
 }
