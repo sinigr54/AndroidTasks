@@ -10,6 +10,7 @@
 #include <dlfcn.h>
 #include <sstream>
 #include "exceptions/TestLoadException.h"
+#include "testInclude/test.h"
 
 TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDirectory) {
 
@@ -63,8 +64,6 @@ const string &TasksLoader::getWorkDirectory() const {
 }
 
 TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
-	TaskConstructor constructor;
-
 	std::stringstream stream;
 	stream << taskNumber;
 	string functionName("task");
@@ -78,10 +77,19 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "All rights");
 	}
 
-	char* (*loadTaskText)();
-	loadTaskText = (char *(*)()) dlsym(handle, (functionName + stream.str()).c_str());
+	Test *(*createTestFunc)();
+	void (*destroyTestFunc)(Test *test);
 
-	constructor.setTaskText(loadTaskText());
+	createTestFunc = (Test *(*)()) dlsym(handle, "createTest");
+	destroyTestFunc = (void (*)(Test *)) dlsym(handle, "destroyTest");
+
+	TaskConstructor constructor;
+	Test *test = createTestFunc();
+
+	constructor.setTaskName(test->topic());
+	test->constructTask(constructor, taskNumber - 1);
+
+	destroyTestFunc(test);
 
 	dlclose(handle);
 

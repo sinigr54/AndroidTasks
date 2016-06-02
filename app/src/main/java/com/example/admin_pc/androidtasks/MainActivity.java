@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 	// Test Function
 	private void copyLibraryFromAssetsToTestsDirectory(String path) throws IOException {
 		FileOutputStream outputStream;
-		InputStream inputStream = getAssets().open("test.so");
+		InputStream inputStream = getAssets().open("libtest.so");
 		String fileName = path + "/libtest.so";
 
 		File file = new File(fileName);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	// Тест работы
-	public void clickButton(View view) {
+																																																																																																																																																																																																																																																																																																																				public void clickButton(View view) {
 		TextView textView = (TextView) findViewById(R.id.text_view);
 		if (textView != null) {
 			/*StringBuilder builder = new StringBuilder();
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 			String result = builder.toString();
 			textView.setText(result.substring(0, result.length() - 1));*/
 			Task task = tasksManager.loadTask("test", 1);
-			textView.setText(task.getText());
+			textView.setText(task.getName() + System.lineSeparator() + task.getText());
 		}
 	}
 

@@ -25,9 +25,7 @@ public:
 
 	string getTaskName();
 
-
-
-	/*void textTest(const string &text);
+	void textTest(const string &text);
 
 	void beginTest(const string &text);
 
@@ -37,7 +35,7 @@ public:
 
 	void variant(int trueAnswer, const string &answer, const string &cmt, const string &numpic = "");
 
-	void addOldTask();*/
+	void addOldTask();
 
 	void setTaskType(const string &taskType) {
 		TaskConstructor::taskType = taskType;
@@ -45,10 +43,6 @@ public:
 
 	void setTaskName(const string &taskName) {
 		TaskConstructor::taskName = taskName;
-	}
-
-	void setTaskText(const string &taskText) {
-		TaskConstructor::taskText = taskText;
 	}
 };
 
