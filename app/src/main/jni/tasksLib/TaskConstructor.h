@@ -10,6 +10,8 @@
 using std::string;
 
 class TaskConstructor {
+	string taskType;
+	string taskName;
 	string taskText;
 public:
 
@@ -19,7 +21,13 @@ public:
 
 	string getTaskText();
 
-	void textTest(const string &text);
+	string getTaskType();
+
+	string getTaskName();
+
+
+
+	/*void textTest(const string &text);
 
 	void beginTest(const string &text);
 
@@ -29,7 +37,19 @@ public:
 
 	void variant(int trueAnswer, const string &answer, const string &cmt, const string &numpic = "");
 
-	void addOldTask();
+	void addOldTask();*/
+
+	void setTaskType(const string &taskType) {
+		TaskConstructor::taskType = taskType;
+	}
+
+	void setTaskName(const string &taskName) {
+		TaskConstructor::taskName = taskName;
+	}
+
+	void setTaskText(const string &taskText) {
+		TaskConstructor::taskText = taskText;
+	}
 };
 
 

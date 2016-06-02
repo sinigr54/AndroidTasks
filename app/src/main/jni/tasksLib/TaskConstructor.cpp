@@ -4,7 +4,7 @@
 
 #include "TaskConstructor.h"
 
-TaskConstructor::TaskConstructor(): taskText("") {
+TaskConstructor::TaskConstructor(): taskText(""), taskType(""), taskName("") {
 
 }
 
@@ -16,7 +16,7 @@ string TaskConstructor::getTaskText() {
 	return taskText;
 }
 
-void TaskConstructor::textTest(const string &text) {
+/*void TaskConstructor::textTest(const string &text) {
 	taskText += text + "\n";
 }
 
@@ -38,4 +38,12 @@ void TaskConstructor::variant(int trueAnswer, const string &answer, const string
 
 void TaskConstructor::addOldTask() {
 
+}*/
+
+string TaskConstructor::getTaskType() {
+	return taskType;
+}
+
+string TaskConstructor::getTaskName() {
+	return taskName;
 }

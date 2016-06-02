@@ -46,7 +46,16 @@ public class TasksManager {
 		return list;
 	}
 
+	public Task loadTask(String type, int number) {
+		Task task = new Task();
+		loadTask(task, type, number);
+
+		return task;
+	}
+
 	private native void setLoaderWorkDirectory(String directory);
+
+	private native void loadTask(Task task, String type, int number);
 
 	private native String[] allTaskFromNative();
 }

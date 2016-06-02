@@ -1,6 +1,8 @@
 #include <jni.h>
 #include "TaskConstructor.h"
 #include "TasksLoader.h"
+#include "exceptions/TestLoadException.h"
+#include <android/log.h>
 
 using std::string;
 
@@ -11,6 +13,38 @@ using std::string;
 static TasksLoader loader;
 
 extern "C" {
+
+/*
+ * Загружает задание указанного типа под указанным номеров в объект Task
+ */
+JNIEXPORT void JNICALL
+Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_loadTask__Lcom_example_admin_1pc_androidtasks_Tasks_Task_2Ljava_lang_String_2I(
+		JNIEnv *env, jobject instance, jobject task, jstring type_, jint number) {
+	const char *type = env->GetStringUTFChars(type_, 0);
+
+	TaskConstructor constructor;
+	try {
+		// Error. TODO
+		constructor = loader.loadTaskFromLibrary(string(type), number);
+
+		jclass taskClass = env->GetObjectClass(task);
+		jfieldID taskNameID = env->GetFieldID(taskClass, "name", "java/lang/String");
+		jfieldID taskTypeID = env->GetFieldID(taskClass, "type", "java/lang/String");
+		jfieldID taskTextID = env->GetFieldID(taskClass, "text", "java/lang/String");
+
+		jstring taskName = env->NewStringUTF(constructor.getTaskName().c_str());
+		jstring taskType = env->NewStringUTF(constructor.getTaskType().c_str());
+		jstring taskText = env->NewStringUTF(constructor.getTaskText().c_str());
+
+		env->SetObjectField(task, taskNameID, taskName);
+		env->SetObjectField(task, taskTypeID, taskType);
+		env->SetObjectField(task, taskTextID, taskText);
+	} catch (TestLoadException e) {
+		__android_log_print(ANDROID_LOG_ERROR, "TASKS", e.what());
+	}
+
+	env->ReleaseStringUTFChars(type_, type);
+}
 
 /*
  * Устанавливает рабочий каталог, гду будут храниться все тесты
@@ -48,7 +82,7 @@ Java_com_example_admin_1pc_androidtasks_MainActivity_helloFromLibrary(JNIEnv *en
 	string tasksPath = env->GetStringUTFChars(tasksPath_, 0);
 	loader.setTasksDirectory(tasksPath + "/fileDir");
 
-	string text = loader.readFile("file.txt");
+	string text = loader.readTextFile("file.txt");
 
 	return env->NewStringUTF(text.c_str());
 }

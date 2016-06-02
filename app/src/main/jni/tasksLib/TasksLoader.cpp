@@ -9,6 +9,7 @@
 #include <android/log.h>
 #include <dlfcn.h>
 #include <sstream>
+#include "exceptions/TestLoadException.h"
 
 TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDirectory) {
 
@@ -42,8 +43,10 @@ vector<string> TasksLoader::getAllExistsTasks() {
 	}
 
 	while ((dir = readdir(directory)) != nullptr) {
-		if (string(dir->d_name) != "." && string(dir->d_name) != "..")
-			tasks.push_back(string(dir->d_name));
+		if (string(dir->d_name) != "." && string(dir->d_name) != "..") {
+			string taskType = dir->d_name;
+			tasks.push_back(taskType.substr(0, taskType.find('.')));
+		}
 	}
 
 	closedir(directory);
@@ -66,13 +69,19 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 	stream << taskNumber;
 	string functionName("task");
 
-	string taskFile = workDirectory + taskType + ".so";
-	void* handle = dlopen(taskFile.c_str(), RTLD_LAZY);
+	string taskFile = workDirectory + "/lib" + taskType + ".so";
+	void *handle = dlopen(taskFile.c_str(), RTLD_LAZY);
+	if (handle == nullptr) {
+		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", dlerror());
+		throw TestLoadException("Test library can't dynamically load!");
+	} else {
+		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "All rights");
+	}
 
-	void (*loadTask)(TaskConstructor &c);
-	loadTask = (void (*)(TaskConstructor &)) dlsym(handle, (functionName + stream.str()).c_str());
+	char* (*loadTaskText)();
+	loadTaskText = (char *(*)()) dlsym(handle, (functionName + stream.str()).c_str());
 
-	loadTask(constructor);
+	constructor.setTaskText(loadTaskText());
 
 	dlclose(handle);
 
