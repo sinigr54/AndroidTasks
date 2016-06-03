@@ -63,7 +63,7 @@ const string &TasksLoader::getWorkDirectory() const {
 }
 
 TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
-	string functionCreate = "createTest";onstructor = test->constructTask(taskNumber);
+	string functionCreate = "createTest";
 	string functionDestroy = "destroyTest";
 
 	string taskFile = workDirectory + "/lib" + taskType + ".so";
@@ -87,11 +87,10 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 	TaskConstructor constructor;
 	Test *test = createTestFunc(constructor);
 
-	constructor = test->constructTask(taskNumber);
-	constructor.setTaskName(test->topic());
+	test->constructTask(taskNumber);
+	constructor = test->getCompleteTest();
 
 	destroyTestFunc(test);
-
 	dlclose(handle);
 
 	return constructor;

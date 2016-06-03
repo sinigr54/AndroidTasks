@@ -22,17 +22,19 @@ class Test {
 
 	static void task1(TaskConstructor &constructor);
 
-	void initialize();
+	virtual void initialize();
+
+	static string topic();
 
 public:
 
-	Test(const TaskConstructor &constructor_);
+	Test(const TaskConstructor &);
 
 	virtual ~Test();
 
-	virtual TaskConstructor constructTask(int number);
+	virtual void constructTask(int number);
 
-	virtual string topic();
+	virtual TaskConstructor getCompleteTest();
 
 	virtual int countOfTests();
 };
