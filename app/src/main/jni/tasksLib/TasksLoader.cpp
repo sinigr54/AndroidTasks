@@ -63,7 +63,7 @@ const string &TasksLoader::getWorkDirectory() const {
 }
 
 TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
-	string functionCreate = "createTest";
+	string functionCreate = "createTest";onstructor = test->constructTask(taskNumber);
 	string functionDestroy = "destroyTest";
 
 	string taskFile = workDirectory + "/lib" + taskType + ".so";
@@ -72,20 +72,22 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", dlerror());
 		throw TestLoadException("Test library can't dynamically load!");
 	} else {
-		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "All rights");
+		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "Library has been loaded");
 	}
 
-	Test *(*createTestFunc)(const TaskConstructor &constructor);
-	void (*destroyTestFunc)(Test *test);
+	using CreateType = Test *(TaskConstructor &);
+	using DestroyType = void(Test *);
 
-	createTestFunc = (Test *(*)(const TaskConstructor &constructor)) dlsym(handle, functionCreate.c_str());
-	destroyTestFunc = (void (*)(Test *)) dlsym(handle, functionDestroy.c_str());
+	std::function<CreateType> createTestFunc;
+	std::function<DestroyType> destroyTestFunc;
+
+	createTestFunc = (Test *(*)(TaskConstructor &)) dlsym(handle, functionCreate.c_str());
+	destroyTestFunc = (void (*)(Test *test)) dlsym(handle, functionDestroy.c_str());
 
 	TaskConstructor constructor;
 	Test *test = createTestFunc(constructor);
 
 	constructor = test->constructTask(taskNumber);
-	int count = test->countOfTests();
 	constructor.setTaskName(test->topic());
 
 	destroyTestFunc(test);
