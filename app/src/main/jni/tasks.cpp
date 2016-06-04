@@ -24,13 +24,12 @@ Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_loadTask__Lcom_exampl
 
 	TaskConstructor constructor;
 	try {
-		// Error. TODO
 		constructor = loader.loadTaskFromLibrary(string(type), number);
 
 		jclass taskClass = env->GetObjectClass(task);
-		jfieldID taskNameID = env->GetFieldID(taskClass, "name", "java/lang/String");
-		jfieldID taskTypeID = env->GetFieldID(taskClass, "type", "java/lang/String");
-		jfieldID taskTextID = env->GetFieldID(taskClass, "text", "java/lang/String");
+		jfieldID taskNameID = env->GetFieldID(taskClass, "name", "Ljava/lang/String;");
+		jfieldID taskTypeID = env->GetFieldID(taskClass, "type", "Ljava/lang/String;");
+		jfieldID taskTextID = env->GetFieldID(taskClass, "text", "Ljava/lang/String;");
 
 		jstring taskName = env->NewStringUTF(constructor.getTaskName().c_str());
 		jstring taskType = env->NewStringUTF(constructor.getTaskType().c_str());
@@ -66,7 +65,8 @@ Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_allTaskFromNative(JNI
 	jobjectArray result;
 
 	auto names = loader.getAllExistsTasks();
-	result = (jobjectArray) env->NewObjectArray((jsize) names.size(), env->FindClass("java/lang/String"),
+	result = (jobjectArray) env->NewObjectArray((jsize) names.size(),
+	                                            env->FindClass("java/lang/String"),
 	                                            env->NewStringUTF(""));
 	for (int i = 0; i < names.size(); ++i) {
 		env->SetObjectArrayElement(result, i, env->NewStringUTF(names[i].c_str()));

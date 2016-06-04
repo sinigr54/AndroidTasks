@@ -7,7 +7,7 @@ model {
 
         defaultConfig {
             applicationId = "com.example.admin_pc.androidtasks"
-            minSdkVersion.apiLevel = 21
+            minSdkVersion.apiLevel = 19
             targetSdkVersion.apiLevel = 23
             versionCode = 1
             versionName = "1.0"
@@ -24,6 +24,8 @@ model {
         cppFlags.add('-I' + file("src/main/jni/tasksLib"))
         cppFlags.add('-fexceptions')
         cppFlags.add('-ldl')
+
+        abiFilters.addAll(['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'])
     }
 
     android.buildTypes {
@@ -31,6 +33,10 @@ model {
             minifyEnabled false
             proguardFiles.add(file('proguard-rules.txt'))
             signingConfig = $("android.signingConfigs.release")
+        }
+
+        debug {
+            debuggable true
         }
     }
 

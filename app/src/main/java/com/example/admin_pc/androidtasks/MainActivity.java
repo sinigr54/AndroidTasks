@@ -1,5 +1,6 @@
 package com.example.admin_pc.androidtasks;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -30,24 +31,48 @@ public class MainActivity extends AppCompatActivity {
 
 	TasksManager tasksManager;
 
-	private static final String taskDirectory = "/Tests";
+	private static final String taskDirectory = "Tests";
+	private static final String libraryBuild = File.separator + taskDirectory + File.separator + Build.CPU_ABI;
 
-	// I cant create files on SD card
-	private File getTestsStorageDir(String dirName) {
-		File file = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_DOCUMENTS), dirName);
-		if (!file.mkdir()) {
-			Log.e(LOG_TAG, "Directory not created");
+	public boolean isExternalStorageWritable() {
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			return true;
+		}
+		return false;
+	}
+
+	private String getTaskDirectory() {
+		String fullTasksDirectory;
+		if (isExternalStorageWritable()) {
+			fullTasksDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).
+					getAbsolutePath();
+		} else {
+			fullTasksDirectory = getFilesDir().
+					getAbsolutePath();
+		}
+		fullTasksDirectory += libraryBuild;
+		return fullTasksDirectory;
+	}
+
+	private boolean createTaskDirectory(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			if (!file.mkdirs()) {
+				return false;
+			}
+		} else {
+			return false;
 		}
 
-		return file;
+		return true;
 	}
 
 	// Test Function
 	private void copyLibraryFromAssetsToTestsDirectory(String path) throws IOException {
 		FileOutputStream outputStream;
 		InputStream inputStream = getAssets().open("libtest.so");
-		String fileName = path + "/libtest.so";
+		String fileName = path + File.separator + "libtest.so";
 
 		File file = new File(fileName);
 		if (!file.exists()) {
@@ -79,15 +104,8 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		final String fullTasksDirectory = getFilesDir().
-				getAbsolutePath() + taskDirectory;
-
-		File file = new File(fullTasksDirectory);
-		if (!file.exists()) {
-			if (!file.mkdirs()) {
-				Log.e(LOG_TAG, "Error create dirs");
-			}
-		}
+		String fullTasksDirectory = getTaskDirectory();
+		createTaskDirectory(fullTasksDirectory);
 
 		tasksManager = TasksManager.getTaskManager(fullTasksDirectory);
 
@@ -98,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		TextView textView = (TextView) findViewById(R.id.text_view);
-		textView.setText(fullTasksDirectory);
+		if (textView != null) {
+			textView.setText(fullTasksDirectory);
+		}
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
