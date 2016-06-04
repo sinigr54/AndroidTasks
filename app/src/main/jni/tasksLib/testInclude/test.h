@@ -6,7 +6,7 @@
 #define ANDROIDTASKS_TEST_H
 
 #include <string>
-#include "../../../../../../distribution/taskconstructor/include/TaskConstructor.h"
+#include "../TaskConstructor.h"
 #include <vector>
 #include <functional>
 
