@@ -44,10 +44,12 @@ vector<string> TasksLoader::getAllExistsTasks() {
 		return tasks;
 	}
 
+	int prefixSize = 3;
 	while ((dir = readdir(directory)) != nullptr) {
 		if (string(dir->d_name) != "." && string(dir->d_name) != "..") {
 			string taskType = dir->d_name;
-			tasks.push_back(taskType.substr(0, taskType.find('.')));
+			taskType = taskType.substr(prefixSize, taskType.find('.') - prefixSize);
+			tasks.push_back(taskType);
 		}
 	}
 

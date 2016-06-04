@@ -1,9 +1,5 @@
 package com.example.admin_pc.androidtasks.Tasks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class TasksManager {
 	static {
 		System.loadLibrary("tasks");
@@ -38,12 +34,9 @@ public class TasksManager {
 		setLoaderWorkDirectory(workDirectory);
 	}
 
-	public List<String> allTasks() {
+	public String[] allTasks() {
 		String[] tasks = allTaskFromNative();
-		List<String> list = new ArrayList<>();
-		Collections.addAll(list, tasks);
-
-		return list;
+		return tasks;
 	}
 
 	public Task loadTask(String type, int number) {

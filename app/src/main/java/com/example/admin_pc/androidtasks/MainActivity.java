@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import com.example.admin_pc.androidtasks.Tasks.Task;
 import com.example.admin_pc.androidtasks.Tasks.TasksManager;
 
 import java.io.File;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 	public boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			return true;
+			return false;
 		}
 		return false;
 	}
@@ -111,11 +109,6 @@ public class MainActivity extends AppCompatActivity {
 			e.printStackTrace();
 		}
 
-		TextView textView = (TextView) findViewById(R.id.text_view);
-		if (textView != null) {
-			textView.setText(fullTasksDirectory);
-		}
-
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
 			fab.setOnClickListener(new View.OnClickListener() {
@@ -149,22 +142,4 @@ public class MainActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-
-	// Тест работы
-																																																																																																																																																																																																																																																																																																																				public void clickButton(View view) {
-		TextView textView = (TextView) findViewById(R.id.text_view);
-		if (textView != null) {
-			/*StringBuilder builder = new StringBuilder();
-			for (String task : tasksManager.allTasks()) {
-				builder.append(task).append(System.lineSeparator());
-			}
-
-			String result = builder.toString();
-			textView.setText(result.substring(0, result.length() - 1));*/
-			Task task = tasksManager.loadTask("test", 1);
-			textView.setText(task.getName() + System.lineSeparator() + task.getText());
-		}
-	}
-
-	public native String helloFromLibrary(String tasksPath);
 }
