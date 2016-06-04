@@ -17,12 +17,14 @@ TasksLoader::TasksLoader(const string &tasksDirectory) : workDirectory(tasksDire
 
 string TasksLoader::readTextFile(const string &fileName) {
 	string textFromFile = "";
+	string newLine = "\n";
+
 	std::fstream file(workDirectory + "/" + fileName);
 
 	while (!file.eof()) {
 		string line;
 		getline(file, line);
-		textFromFile += line + "\n";
+		textFromFile += line + newLine;
 	}
 
 	file.close();
@@ -62,18 +64,26 @@ const string &TasksLoader::getWorkDirectory() const {
 	return workDirectory;
 }
 
+bool isHaveDlError(const void *handle) {
+	if (handle == nullptr) {
+		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", dlerror());
+		return true;
+	}
+	__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "Library has been loaded");
+	return false;
+}
+
 TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
 	string functionCreate = "createTest";
 	string functionDestroy = "destroyTest";
 
-	string taskFile = workDirectory + "/lib" + taskType + ".so";
+	string taskLibPrefix = "/lib";
+	string taskLibPostfix = ".so";
+
+	string taskFile = workDirectory + taskLibPrefix + taskType + taskLibPostfix;
 	void *handle = dlopen(taskFile.c_str(), RTLD_LAZY);
-	if (handle == nullptr) {
-		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", dlerror());
+	if (isHaveDlError(handle))
 		throw TestLoadException("Test library can't dynamically load!");
-	} else {
-		__android_log_print(ANDROID_LOG_ERROR, "TASK_LOADER", "Library has been loaded");
-	}
 
 	using CreateType = Test *(TaskConstructor &);
 	using DestroyType = void(Test *);

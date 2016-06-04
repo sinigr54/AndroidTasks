@@ -57,15 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
 	private boolean createTaskDirectory(String path) {
 		File file = new File(path);
-		if (!file.exists()) {
-			if (!file.mkdirs()) {
-				return false;
-			}
-		} else {
+		if (file.exists()) {
 			return false;
 		}
 
-		return true;
+		return file.mkdirs();
 	}
 
 	// Test Function
