@@ -47,3 +47,11 @@ string TaskConstructor::getTaskType() {
 string TaskConstructor::getTaskName() {
 	return taskName;
 }
+
+void TaskConstructor::setTaskType(const string &taskType) {
+	this->taskType = taskType;
+}
+
+void TaskConstructor::setTaskName(const string &taskName) {
+	this->taskName = taskName;
+}

@@ -37,13 +37,9 @@ public:
 
 	void addOldTask();
 
-	void setTaskType(const string &taskType) {
-		TaskConstructor::taskType = taskType;
-	}
+	void setTaskType(const string &taskType);
 
-	void setTaskName(const string &taskName) {
-		TaskConstructor::taskName = taskName;
-	}
+	void setTaskName(const string &taskName);
 };
 
 
