@@ -15,7 +15,10 @@ import android.view.View;
 import com.example.admin_pc.androidtasks.Tasks.TasksManager;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 	public boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			return false;
+			return true;
 		}
 		return false;
 	}
@@ -60,6 +63,61 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return file.mkdirs();
+	}
+
+	private String[] getListTaskFiles(String path, final String pathTo) {
+		FilenameFilter filenameFilter = new FilenameFilter() {
+			@Override
+			public boolean accept(File file, String s) {
+				String shortFileName = s.substring(s.lastIndexOf(File.separatorChar));
+				if (new File(pathTo, shortFileName).exists()) {
+					return false;
+				}
+
+				int index = s.lastIndexOf('.');
+				if (index > 0) {
+					String extension = s.substring(index);
+					if (extension.equals(".so")) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+		};
+
+		String[] files = new File(path).list(filenameFilter);
+		return files;
+	}
+
+	private void copyLibraryFromExternalStorageToInternal(String pathFrom, String pathTo) throws FileNotFoundException {
+		String[] files = getListTaskFiles(pathFrom, pathTo);
+		if (files == null)
+			return;
+
+		for (String fileName : files) {
+			Log.d(LOG_TAG, "Copy files");
+
+			String shortFileName = File.separator + fileName.substring(fileName.lastIndexOf(File.separatorChar));
+			FileInputStream inputStream = new FileInputStream(fileName);
+			FileOutputStream outputStream = new FileOutputStream(pathTo + shortFileName);
+
+			try {
+				byte[] buffer = new byte[1024];
+
+				int length;
+				while ((length = inputStream.read(buffer)) > 0) {
+					outputStream.write(buffer, 0, length);
+				}
+				outputStream.close();
+				inputStream.close();
+
+				Log.d(LOG_TAG, "Complete copy");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// Test Function
@@ -101,13 +159,16 @@ public class MainActivity extends AppCompatActivity {
 		String fullTasksDirectory = getTaskDirectory();
 		createTaskDirectory(fullTasksDirectory);
 
-		tasksManager = TasksManager.getTaskManager(fullTasksDirectory);
-
 		try {
-			copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory);
+			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory);
+			copyLibraryFromExternalStorageToInternal(fullTasksDirectory, getFilesDir().
+					getAbsolutePath() + libraryBuild);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		tasksManager = TasksManager.getTaskManager(getFilesDir().
+				getAbsolutePath() + libraryBuild);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (fab != null) {
