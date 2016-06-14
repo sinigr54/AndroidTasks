@@ -69,11 +69,15 @@ public class MainActivity extends AppCompatActivity {
 		FilenameFilter filenameFilter = new FilenameFilter() {
 			@Override
 			public boolean accept(File file, String s) {
-				String shortFileName = s.substring(s.lastIndexOf(File.separatorChar));
-				if (new File(pathTo, shortFileName).exists()) {
+				Log.d(LOG_TAG, s);
+				//String shortFileName = s.substring(s.lastIndexOf(File.separatorChar));
+				if (new File(pathTo, s).exists()) {
 					return false;
 				}
 
+				if (s.equals(".") || s.equals(".."))
+					return false;
+				Log.d(LOG_TAG, "RUN");
 				int index = s.lastIndexOf('.');
 				if (index > 0) {
 					String extension = s.substring(index);
@@ -95,12 +99,20 @@ public class MainActivity extends AppCompatActivity {
 		if (files == null)
 			return;
 
+		File pathToFile = new File(pathTo);
+		if (!pathToFile.exists()) {
+			pathToFile.mkdirs();
+			Log.d(LOG_TAG, "Dirs created");
+		}
+
 		for (String fileName : files) {
 			Log.d(LOG_TAG, "Copy files");
 
-			String shortFileName = File.separator + fileName.substring(fileName.lastIndexOf(File.separatorChar));
-			FileInputStream inputStream = new FileInputStream(fileName);
-			FileOutputStream outputStream = new FileOutputStream(pathTo + shortFileName);
+			//String shortFileName = File.separator + fileName.substring(fileName.lastIndexOf(File.separatorChar));
+			String fileFrom = pathFrom + File.separator + fileName;
+			String fileTo = pathTo + File.separator + fileName;
+			FileInputStream inputStream = new FileInputStream(fileFrom);
+			FileOutputStream outputStream = new FileOutputStream(fileTo);
 
 			try {
 				byte[] buffer = new byte[1024];
@@ -121,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	// Test Function
-	private void copyLibraryFromAssetsToTestsDirectory(String path) throws IOException {
+	private void copyLibraryFromAssetsToTestsDirectory(String path, String name) throws IOException {
 		FileOutputStream outputStream;
-		InputStream inputStream = getAssets().open("libtest.so");
-		String fileName = path + File.separator + "libtest.so";
+		InputStream inputStream = getAssets().open(name);
+		String fileName = path + File.separator + name;
 
 		File file = new File(fileName);
 		if (!file.exists()) {
@@ -157,10 +169,15 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 		String fullTasksDirectory = getTaskDirectory();
-		createTaskDirectory(fullTasksDirectory);
+		if (createTaskDirectory(fullTasksDirectory)) {
+			Log.d(LOG_TAG, "Dir was created");
+		}
+
+		Log.d(LOG_TAG, fullTasksDirectory);
 
 		try {
-			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory);
+			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_POLYNOMS.so");
+			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_INFCOD.so");
 			copyLibraryFromExternalStorageToInternal(fullTasksDirectory, getFilesDir().
 					getAbsolutePath() + libraryBuild);
 		} catch (IOException e) {
