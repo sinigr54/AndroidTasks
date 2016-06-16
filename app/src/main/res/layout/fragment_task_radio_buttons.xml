@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+	<TextView
+		android:id="@+id/task_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:text="Task name"
+		android:textColor="@android:color/background_dark"
+		android:textSize="16sp"/>
+
+	<TextView
+		android:id="@+id/task_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/task_name"
+		android:layout_marginTop="16dp"
+		android:text="Task text"
+		android:textSize="18sp"/>
+
+	<RadioGroup
+		android:id="@+id/radio_group"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/task_text"
+		android:layout_marginTop="16dp">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+				<RadioButton
+					android:id="@+id/radio1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Variant 1"/>
+
+				<RadioButton
+					android:id="@+id/radio2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Variant 2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="84dp"
+				android:orientation="vertical">
+
+				<RadioButton
+					android:id="@+id/radio3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Variant 3"/>
+
+				<RadioButton
+					android:id="@+id/radio4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Variant 4"/>
+			</LinearLayout>
+		</LinearLayout>
+	</RadioGroup>
+
+	<Button
+		android:text="Дальше"
+		android:id="@+id/next"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+
+</RelativeLayout>

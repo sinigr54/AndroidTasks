@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.example.admin_pc.androidtasks.Tasks.TasksManager;
 
 public class ListTasksFragment extends ListFragment {
-	public static String TASK_NAME = "taskName";
+	public static String TEST_NAME = "testName";
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class ListTasksFragment extends ListFragment {
 		ArrayAdapter<String> adapter = (ArrayAdapter<String>) getListAdapter();
 
 		Intent intent = new Intent(getActivity(), TaskActivity.class);
-		intent.putExtra(TASK_NAME, adapter.getItem(position));
+		intent.putExtra(TEST_NAME, adapter.getItem(position));
 
 		startActivity(intent);
 	}

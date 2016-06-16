@@ -2,4 +2,7 @@
 	<string name="app_name">AndroidTasks</string>
 	<string name="action_settings">Settings</string>
 	<string name="title_activity_task">TaskActivity</string>
+	<string name="true_answer">Верный ответ</string>
+	<string name="false_answer">Неверный ответ</string>
+	<string name="choise_one_answer">Выберите один вариант ответа</string>
 </resources>

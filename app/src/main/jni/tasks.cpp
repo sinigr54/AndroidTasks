@@ -15,6 +15,23 @@ static TasksLoader loader;
 extern "C" {
 
 /*
+ * Возвращает количество заданий в тестовом наборе
+ */
+
+JNIEXPORT jint JNICALL
+Java_com_example_admin_1pc_androidtasks_Tasks_TasksManager_countTasksInTest(JNIEnv *env,
+                                                                            jobject instance,
+                                                                            jstring type_) {
+	const char *type = env->GetStringUTFChars(type_, 0);
+
+	jint count = loader.countTasksInTest(string(type));
+
+	env->ReleaseStringUTFChars(type_, type);
+
+	return count;
+}
+
+/*
  * Загружает задание указанного типа под указанным номеров в объект Task
  */
 JNIEXPORT void JNICALL

@@ -7,15 +7,23 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
 	<TextView
-		android:id="@+id/text_view"
+		android:id="@+id/task_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Other text"/>
+		android:text="Task name"
+		android:layout_centerHorizontal="true"/>
+
+	<TextView
+		android:layout_below="@+id/task_name"
+		android:id="@+id/task_text"
+		android:text="Task text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
 
 	<Button
 		android:id="@+id/button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/text_view"/>
+		android:layout_below="@id/task_text"/>
 
 </RelativeLayout>

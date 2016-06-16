@@ -17,6 +17,8 @@ using std::vector;
 class TasksLoader {
 	string workDirectory;
 
+	string createFullTaskLibraryName(const string& taskType)const;
+
 public:
 	const string &getWorkDirectory() const;
 
@@ -29,6 +31,8 @@ public:
 	vector<string> getAllExistsTasks();
 
 	TaskConstructor loadTaskFromLibrary(const string &taskType, int taskNumber) const;
+
+	int countTasksInTest(const string &taskType) const;
 };
 
 

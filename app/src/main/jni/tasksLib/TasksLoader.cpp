@@ -75,14 +75,20 @@ bool isHaveDlError(const void *handle) {
 	return false;
 }
 
-TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
-	string functionCreate = "createTest";
-	string functionDestroy = "destroyTest";
-
+string TasksLoader::createFullTaskLibraryName(const string &taskType)const {
 	string taskLibPrefix = "/lib";
 	string taskLibPostfix = ".so";
 
 	string taskFile = workDirectory + taskLibPrefix + taskType + taskLibPostfix;
+
+	return taskFile;
+}
+
+TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int taskNumber) const {
+	string functionCreate = "createTest";
+	string functionDestroy = "destroyTest";
+
+	string taskFile = createFullTaskLibraryName(taskType);
 	void *handle = dlopen(taskFile.c_str(), RTLD_LAZY);
 	if (isHaveDlError(handle))
 		throw TestLoadException("Test library can't dynamically load!");
@@ -106,4 +112,19 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 	dlclose(handle);
 
 	return constructor;
+}
+
+int TasksLoader::countTasksInTest(const string &taskType) const {
+	string functionCountTasks = "countOfTests";
+
+	string taskFile = createFullTaskLibraryName(taskType);
+	void *handle = dlopen(taskFile.c_str(), RTLD_LAZY);
+	if (isHaveDlError(handle))
+		throw TestLoadException("Test library can't dynamically load!");
+
+	using CountTasksType = int();
+	std::function<CountTasksType> countTasksFunc;
+	countTasksFunc = (int (*)()) dlsym(handle, functionCountTasks.c_str());
+
+	return countTasksFunc();
 }

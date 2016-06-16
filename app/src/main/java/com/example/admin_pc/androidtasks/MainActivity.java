@@ -70,10 +70,6 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public boolean accept(File file, String s) {
 				Log.d(LOG_TAG, s);
-				//String shortFileName = s.substring(s.lastIndexOf(File.separatorChar));
-				if (new File(pathTo, s).exists()) {
-					return false;
-				}
 
 				if (s.equals(".") || s.equals(".."))
 					return false;
@@ -94,6 +90,31 @@ public class MainActivity extends AppCompatActivity {
 		return files;
 	}
 
+	private void clean(String pathExternal) {
+		File dir = new File(pathExternal);
+		for (File file : dir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File file, String s) {
+				return true;
+			}
+		})) {
+			file.delete();
+		}
+	}
+
+	private void cleanInternalStorageTasks(String pathInternal) {
+		File files = new File(pathInternal);
+		for (File file : files.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File file, String s) {
+				return true;
+			}
+		})) {
+			Log.d(LOG_TAG, file.getAbsolutePath());
+			file.delete();
+		}
+	}
+
 	private void copyLibraryFromExternalStorageToInternal(String pathFrom, String pathTo) throws FileNotFoundException {
 		String[] files = getListTaskFiles(pathFrom, pathTo);
 		if (files == null)
@@ -105,10 +126,11 @@ public class MainActivity extends AppCompatActivity {
 			Log.d(LOG_TAG, "Dirs created");
 		}
 
+		cleanInternalStorageTasks(pathTo);
+
 		for (String fileName : files) {
 			Log.d(LOG_TAG, "Copy files");
 
-			//String shortFileName = File.separator + fileName.substring(fileName.lastIndexOf(File.separatorChar));
 			String fileFrom = pathFrom + File.separator + fileName;
 			String fileTo = pathTo + File.separator + fileName;
 			FileInputStream inputStream = new FileInputStream(fileFrom);
@@ -176,8 +198,7 @@ public class MainActivity extends AppCompatActivity {
 		Log.d(LOG_TAG, fullTasksDirectory);
 
 		try {
-			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_POLYNOMS.so");
-			//copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_INFCOD.so");
+			copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_UINFCOD1.so");
 			copyLibraryFromExternalStorageToInternal(fullTasksDirectory, getFilesDir().
 					getAbsolutePath() + libraryBuild);
 		} catch (IOException e) {
