@@ -1,10 +1,10 @@
 package com.example.admin_pc.androidtasks;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +37,16 @@ public class TaskFragment extends Fragment {
 
 	private TaskChangeable changeable;
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		changeable = (TaskChangeable) context;
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		try {
+			changeable = (TaskChangeable) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + "must implement TaskChangeable");
+		}
 	}
 
 	@Override

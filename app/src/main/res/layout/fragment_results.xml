@@ -14,7 +14,7 @@
 			android:id="@+id/result_string_questions"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Всего вопросов:"/>
+			android:text="@string/res_string_questions"/>
 
 		<TextView
 			android:id="@+id/questions_size"
@@ -33,7 +33,7 @@
 			android:id="@+id/result_string_true"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Правильных ответов:"/>
+			android:text="@string/res_true_answers"/>
 
 		<TextView
 			android:id="@+id/true_answers_size"
@@ -51,7 +51,7 @@
 			android:id="@+id/result_string_false"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Неправильных ответов:"/>
+			android:text="@string/res_false_answers"/>
 
 		<TextView
 			android:id="@+id/false_answers_size"
@@ -69,7 +69,7 @@
 			android:id="@+id/result"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Результат:"/>
+			android:text="@string/result_string"/>
 
 		<TextView
 			android:id="@+id/result_value"

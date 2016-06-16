@@ -5,4 +5,11 @@
 	<string name="true_answer">Верный ответ</string>
 	<string name="false_answer">Неверный ответ</string>
 	<string name="choise_one_answer">Выберите один вариант ответа</string>
+	<string name="res_string_questions">Всего вопросов:</string>
+	<string name="res_true_answers">Правильных ответов:</string>
+	<string name="res_false_answers">Неправильных ответов:</string>
+	<string name="result_string">Результат:</string>
+	<string name="alert_dialog_ok">Да</string>
+	<string name="alert_dialog_cancel">Нет</string>
+	<string name="alert_dialog_two_buttons_title">Завершить тестирование? Все результаты будут потеряны.</string>
 </resources>
