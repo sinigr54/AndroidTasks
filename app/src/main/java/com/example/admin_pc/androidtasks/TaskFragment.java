@@ -87,21 +87,20 @@ public class TaskFragment extends Fragment {
 	private void setRadioButtons(View view, TaskParser parser) {
 		final List<RadioButton> radioButtons = new ArrayList<>();
 
-		final RadioButton radioButton1 = (RadioButton) view.findViewById(R.id.radio1);
-		final RadioButton radioButton2 = (RadioButton) view.findViewById(R.id.radio2);
-		final RadioButton radioButton3 = (RadioButton) view.findViewById(R.id.radio3);
-		final RadioButton radioButton4 = (RadioButton) view.findViewById(R.id.radio4);
-
-		radioButtons.add(radioButton1);
-		radioButtons.add(radioButton2);
-		radioButtons.add(radioButton3);
-		radioButtons.add(radioButton4);
+		radioButtons.add((RadioButton) view.findViewById(R.id.radio1));
+		radioButtons.add((RadioButton) view.findViewById(R.id.radio2));
+		radioButtons.add((RadioButton) view.findViewById(R.id.radio3));
+		radioButtons.add((RadioButton) view.findViewById(R.id.radio4));
 
 		List<String> variants = parser.getVariants();
-		radioButtons.get(0).setText(variants.get(0));
-		radioButtons.get(1).setText(variants.get(1));
-		radioButtons.get(2).setText(variants.get(2));
-		radioButtons.get(3).setText(variants.get(3));
+		for (int i = 0; i < variants.size(); ++i) {
+			radioButtons.get(i).setText(variants.get(i));
+		}
+
+		if (variants.size() == 2) {
+			radioButtons.get(1).setVisibility(View.INVISIBLE);
+			radioButtons.get(3).setVisibility(View.INVISIBLE);
+		}
 
 		CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
 			@Override

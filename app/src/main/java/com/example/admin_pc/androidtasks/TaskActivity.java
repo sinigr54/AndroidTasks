@@ -62,12 +62,12 @@ public class TaskActivity extends AppCompatActivity implements TaskFragment.Task
 			if (currentTaskNumber > 0) {
 				Fragment oldFragment = manager.findFragmentById(R.id.fragment_container);
 				transaction
-						.remove(oldFragment)
-						.commit();
+						.remove(oldFragment);
 				manager.popBackStack();
 			}
 
 			transaction
+					.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right, R.animator.slide_out_left, R.animator.slide_in_right)
 					.add(R.id.fragment_container, fragment)
 					.commit();
 

@@ -51,13 +51,14 @@
 					android:id="@+id/radio2"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
 					android:text="Variant 2"/>
 			</LinearLayout>
 
 			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="84dp"
+				android:layout_marginLeft="118dp"
 				android:orientation="vertical">
 
 				<RadioButton
@@ -70,17 +71,18 @@
 					android:id="@+id/radio4"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
 					android:text="Variant 4"/>
 			</LinearLayout>
 		</LinearLayout>
 	</RadioGroup>
 
 	<Button
-		android:text="Дальше"
 		android:id="@+id/next"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:text="Дальше"/>
 
 </RelativeLayout>

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 				if (s.equals(".") || s.equals(".."))
 					return false;
-				Log.d(LOG_TAG, "RUN");
+
 				int index = s.lastIndexOf('.');
 				if (index > 0) {
 					String extension = s.substring(index);
@@ -126,13 +126,12 @@ public class MainActivity extends AppCompatActivity {
 			Log.d(LOG_TAG, "Dirs created");
 		}
 
-		cleanInternalStorageTasks(pathTo);
-
 		for (String fileName : files) {
 			Log.d(LOG_TAG, "Copy files");
 
 			String fileFrom = pathFrom + File.separator + fileName;
 			String fileTo = pathTo + File.separator + fileName;
+
 			FileInputStream inputStream = new FileInputStream(fileFrom);
 			FileOutputStream outputStream = new FileOutputStream(fileTo);
 
@@ -160,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
 		InputStream inputStream = getAssets().open(name);
 		String fileName = path + File.separator + name;
 
+		Log.d(LOG_TAG, fileName);
 		File file = new File(fileName);
 		if (!file.exists()) {
 			file.createNewFile();
@@ -195,12 +195,13 @@ public class MainActivity extends AppCompatActivity {
 			Log.d(LOG_TAG, "Dir was created");
 		}
 
-		Log.d(LOG_TAG, fullTasksDirectory);
+		String internalStoragePath = getFilesDir().getAbsolutePath() + libraryBuild;
+		cleanInternalStorageTasks(internalStoragePath);
+		Log.d(LOG_TAG, "Full task directory: " + fullTasksDirectory);
 
 		try {
 			copyLibraryFromAssetsToTestsDirectory(fullTasksDirectory, "libEGE_UINFCOD1.so");
-			copyLibraryFromExternalStorageToInternal(fullTasksDirectory, getFilesDir().
-					getAbsolutePath() + libraryBuild);
+			copyLibraryFromExternalStorageToInternal(fullTasksDirectory, internalStoragePath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

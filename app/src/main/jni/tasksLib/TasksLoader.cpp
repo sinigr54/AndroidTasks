@@ -89,6 +89,7 @@ TaskConstructor TasksLoader::loadTaskFromLibrary(const string &taskType, int tas
 	string functionDestroy = "destroyTest";
 
 	string taskFile = createFullTaskLibraryName(taskType);
+	__android_log_print(ANDROID_LOG_DEBUG, "TASK_LOADER", string("Full name lib file: " + taskFile).c_str());
 	void *handle = dlopen(taskFile.c_str(), RTLD_LAZY);
 	if (isHaveDlError(handle))
 		throw TestLoadException("Test library can't dynamically load!");
